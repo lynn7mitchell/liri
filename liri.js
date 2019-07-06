@@ -27,7 +27,7 @@ switch (userCommand) {
     omdbCall();
     break
   case "do-what-it-says":
-    console.log(4);
+    doIt();
     break
 }
 
@@ -44,13 +44,13 @@ function omdbCall() {
       var showData = [
         "Title: " + response.data.Title,
         "Year: " + response.data.Year,
-        "Rating: " + response.data.Ratings.join(", "),
+        "Rating: " + response.data.Ratings[0].Source + ": " + response.data.Ratings[0].Value,
         "Country " + response.data.Country,
         "Language " + response.data.Language,
         "Plot " + response.data.Plot,
         "Actors " + response.data.Actors
       ].join("\n\n");
-      
+
       console.log(showData)
 
     })
@@ -73,7 +73,7 @@ function spotifyCall() {
       return console.log('Error occurred: ' + err);
     }
 
-  
+
     // console.log(data.tracks);
     var showData = [
       "Artist: " + data.tracks.items[0].album.artists[0].name,
@@ -81,38 +81,58 @@ function spotifyCall() {
       "Album: " + data.tracks.items[0].album.name,
 
     ].join("\n\n");
-    
+
     console.log(showData)
 
 
-    
+
   });
 }
 
 //BANDS IN TOWN API CALL
-function bandsintownCall(){
+function bandsintownCall() {
   axios.get("https://rest.bandsintown.com/artists/" + userInput + "/events?app_id=codingbootcamp")
-  .then(function (response) {
-    // handle success
-    // console.log(response.data[0].venue);
+    .then(function (response) {
+      // handle success
+      // console.log(response.data[0].venue);
 
-    var showData = [
-      "Venue " + response.data[0].venue.name,
-      "Location " + response.data[0].venue.city + " " + response.data[0].venue.country,
-      "Date " + response.data[0].datetime 
-    ].join("\n\n");
-    
-    console.log(showData)
+      var showData = [
+        "Venue " + response.data[0].venue.name,
+        "Location " + response.data[0].venue.city + " " + response.data[0].venue.country,
+        "Date " + response.data[0].datetime
+      ].join("\n\n");
 
-  })
-  .catch(function (error) {
-    // handle error
-    console.log(error);
-  })
-  .finally(function () {
-    // always executed
-  });
+      console.log(showData)
+
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+    .finally(function () {
+      // always executed
+    });
 }
 
 
 //DO WHAT IT SAYS
+function doIt() {
+  fs.readFile("random.txt", "utf8", function (error, data) {
+
+    // If the code experiences any errors it will log the error to the console.
+    if (error) {
+      return console.log(error);
+    }
+
+    // Then split it by commas (to make it more readable)
+    var dataArr = data.split(",");
+
+    // We will then re-display the content as an array for later use.
+    // console.log(dataArr);
+
+    userInput = dataArr[1];
+
+    spotifyCall()
+
+  });
+}
