@@ -4,6 +4,7 @@ const Spotify = require('node-spotify-api');
 const axios = require("axios");
 const inquirer = require('inquirer');
 const moment = require("moment");
+const fs = require("fs");
 
 const keys = require('./keys.js');
 const spotify = new Spotify(keys.spotify);
@@ -38,7 +39,20 @@ function omdbCall() {
   axios.get('http://www.omdbapi.com/?apikey=' + keys.omdb.key + '&t=' + userInput)
     .then(function (response) {
       // handle success
-      console.log(response);
+      // console.log(response);
+
+      var showData = [
+        "Title: " + response.data.Title,
+        "Year: " + response.data.Year,
+        "Rating: " + response.data.Ratings.join(", "),
+        "Country " + response.data.Country,
+        "Language " + response.data.Language,
+        "Plot " + response.data.Plot,
+        "Actors " + response.data.Actors
+      ].join("\n\n");
+      
+      console.log(showData)
+
     })
     .catch(function (error) {
       // handle error
@@ -53,13 +67,13 @@ function omdbCall() {
 function spotifyCall() {
   spotify.search({
     type: 'track',
-    query: 'All the Small Things'
+    query: userInput,
   }, function (err, data) {
     if (err) {
       return console.log('Error occurred: ' + err);
     }
 
-    console.log(data);
+    console.log(data.tracks.items[0]);
   });
 }
 
@@ -68,7 +82,16 @@ function bandsintownCall(){
   axios.get("https://rest.bandsintown.com/artists/" + userInput + "/events?app_id=codingbootcamp")
   .then(function (response) {
     // handle success
-    console.log("BND");
+    // console.log(response.data[0].venue);
+
+    var showData = [
+      "Venue " + response.data[0].venue.name,
+      "Location " + response.data[0].venue.city + " " + response.data[0].venue.country,
+      "Date " + response.data[0].datetime 
+    ].join("\n\n");
+    
+    console.log(showData)
+
   })
   .catch(function (error) {
     // handle error
@@ -78,3 +101,6 @@ function bandsintownCall(){
     // always executed
   });
 }
+
+
+//DO WHAT IT SAYS
