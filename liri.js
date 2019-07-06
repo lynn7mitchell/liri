@@ -73,7 +73,19 @@ function spotifyCall() {
       return console.log('Error occurred: ' + err);
     }
 
-    console.log(data.tracks.items[0]);
+  
+    // console.log(data.tracks);
+    var showData = [
+      "Artist: " + data.tracks.items[0].album.artists[0].name,
+      "Title: " + data.tracks.items[0].name,
+      "Album: " + data.tracks.items[0].album.name,
+
+    ].join("\n\n");
+    
+    console.log(showData)
+
+
+    
   });
 }
 
