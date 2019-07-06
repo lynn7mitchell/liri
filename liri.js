@@ -1,38 +1,31 @@
 require("dotenv").config();
 
-const keys = require('./keys.js');
-// const Spotify = new Spotify(keys.spotify);
-const omdb = keys.omdb.key;
-
+const Spotify = require('node-spotify-api');
 const axios = require("axios");
 const inquirer = require('inquirer');
 const moment = require("moment");
+
+const keys = require('./keys.js');
+const spotify = new Spotify(keys.spotify);
+const omdb = keys.omdb.key;
+
 
 //USER INPUT VARIABLES
 let userCommand = process.argv[2];
 let userInput = process.argv[3];
 
-// let userInputArr = [];
-// let userInput = userInputArr.toString();
-// for(let i = 2; i < process.argv.length; i++){
-//     if(process.argv[i] != null){
-//     userInputArr.push(process.argv[i]);
-//     }
-//   }
-// console.log(userInputArr)
-// console.log(userInput)
 
-switch(userCommand){
+switch (userCommand) {
   case "concert-this":
-    console.log("worked");
+    bandsintownCall();
     break
   case "spotify-this-song":
-    console.log(2);
+    spotifyCall();
     break
   case "movie-this":
-    omdb();
+    omdbCall();
     break
-  case"do-what-it-says":
+  case "do-what-it-says":
     console.log(4);
     break
 }
@@ -41,11 +34,41 @@ switch(userCommand){
 
 // OMDB REQUEST
 
-var omdb = function(){
-  axios.get('http://www.omdbapi.com/?apikey='+ userInput + '&t=anchorman'  )
+function omdbCall() {
+  axios.get('http://www.omdbapi.com/?apikey=' + keys.omdb.key + '&t=' + userInput)
+    .then(function (response) {
+      // handle success
+      console.log(response);
+    })
+    .catch(function (error) {
+      // handle error
+      console.log(error);
+    })
+    .finally(function () {
+      // always executed
+    });
+}
+
+//SPOTIFY API CALL
+function spotifyCall() {
+  spotify.search({
+    type: 'track',
+    query: 'All the Small Things'
+  }, function (err, data) {
+    if (err) {
+      return console.log('Error occurred: ' + err);
+    }
+
+    console.log(data);
+  });
+}
+
+//BANDS IN TOWN API CALL
+function bandsintownCall(){
+  axios.get("https://rest.bandsintown.com/artists/" + userInput + "/events?app_id=codingbootcamp")
   .then(function (response) {
     // handle success
-    console.log(response);
+    console.log("BND");
   })
   .catch(function (error) {
     // handle error
@@ -55,5 +78,3 @@ var omdb = function(){
     // always executed
   });
 }
-
-
