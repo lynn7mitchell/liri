@@ -11,14 +11,20 @@
   - Bands In Town API
   - OMDB API
   
-#How to use
+# How to use
 
   - Get an API key for each of the APIs listed above
   - Run npm install
   - Put your api keys inside key.js
   
- #Commands for the application
+ # Commands for the application
   ![Spotify This Song](/img/spotify.png)
   ![Cocnert This ](/img/concert-this.png)
   ![Movie This](/img/movie-this.png)
   ![Do What It Says](/img/do-what-it-sys.png)
+
+
+
+
+
+
