@@ -21,7 +21,7 @@
   ![Spotify This Song](/img/spotify.png)
   ![Cocnert This ](/img/concert-this.png)
   ![Movie This](/img/movie-this.png)
-  ![Do What It Says](/img/do-what-it-sys.png)
+  ![Do What It Says](/img/do-what-it-says.png)
 
 
 
